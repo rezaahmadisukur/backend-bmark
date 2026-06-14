@@ -3,6 +3,6 @@ import { PrismaModule } from './infra/prisma/prisma.module';
 import { ConfigModule } from './infra/config/config.module';
 
 @Module({
-  imports: [PrismaModule, ConfigModule],
+  imports: [ConfigModule, PrismaModule],
 })
 export class AppModule {}
