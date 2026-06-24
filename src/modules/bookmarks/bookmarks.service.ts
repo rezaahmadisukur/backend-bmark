@@ -7,8 +7,21 @@ import { UpdateBookmarkDto } from './dto/update-bookmark.dto';
 export class BookmarksService {
   constructor(private readonly prismaService: PrismaService) {}
 
+  private readonly bookmarkSelect = {
+    id: true,
+    url: true,
+    title: true,
+    description: true,
+    favicon: true,
+    isFavorite: true,
+    createdAt: true,
+    updatedAt: true,
+  } as const;
+
   async findAll() {
-    return this.prismaService.bookmark.findMany();
+    return this.prismaService.bookmark.findMany({
+      select: this.bookmarkSelect,
+    });
   }
 
   async findOne(id: string) {
@@ -16,6 +29,7 @@ export class BookmarksService {
       where: {
         id: id,
       },
+      select: this.bookmarkSelect,
     });
   }
 
@@ -27,6 +41,7 @@ export class BookmarksService {
         description: createBookmarkDto.description,
         userId: 'temp-user-id',
       },
+      select: this.bookmarkSelect,
     });
   }
 
@@ -36,6 +51,7 @@ export class BookmarksService {
         id: id,
       },
       data: updateBookmarkDto,
+      select: this.bookmarkSelect,
     });
   }
 
@@ -44,6 +60,7 @@ export class BookmarksService {
       where: {
         id: id,
       },
+      select: this.bookmarkSelect,
     });
   }
 }
