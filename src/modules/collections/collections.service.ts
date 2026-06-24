@@ -7,8 +7,20 @@ import { UpdateCollectionDto } from './dto/update-collection.dto';
 export class CollectionsService {
   constructor(private readonly prismaService: PrismaService) {}
 
+  private readonly collectionSelect = {
+    id: true,
+    name: true,
+    description: true,
+    color: true,
+    parentId: true,
+    createdAt: true,
+    updatedAt: true,
+  } as const;
+
   async findAll() {
-    return this.prismaService.collection.findMany();
+    return this.prismaService.collection.findMany({
+      select: this.collectionSelect,
+    });
   }
 
   async findOne(id: string) {
@@ -16,6 +28,7 @@ export class CollectionsService {
       where: {
         id: id,
       },
+      select: this.collectionSelect,
     });
   }
 
@@ -28,6 +41,7 @@ export class CollectionsService {
         parentId: createCollectionDto.parentId,
         userId: 'temp-user-id',
       },
+      select: this.collectionSelect,
     });
   }
 
@@ -37,6 +51,7 @@ export class CollectionsService {
         id: id,
       },
       data: updateCollectionDto,
+      select: this.collectionSelect,
     });
   }
 
@@ -45,6 +60,7 @@ export class CollectionsService {
       where: {
         id: id,
       },
+      select: this.collectionSelect,
     });
   }
 }
