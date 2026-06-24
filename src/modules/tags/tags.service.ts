@@ -7,8 +7,17 @@ import { UpdateTagDto } from './dto/update-tag.dto';
 export class TagsService {
   constructor(private readonly prismaService: PrismaService) {}
 
+  private readonly tagSelect = {
+    id: true,
+    name: true,
+    color: true,
+    createdAt: true,
+  } as const;
+
   async findAll() {
-    return this.prismaService.tag.findMany();
+    return this.prismaService.tag.findMany({
+      select: this.tagSelect,
+    });
   }
 
   async findOne(id: string) {
@@ -16,12 +25,14 @@ export class TagsService {
       where: {
         id: id,
       },
+      select: this.tagSelect,
     });
   }
 
   async create(createTagDto: CreateTagDto) {
     return this.prismaService.tag.create({
       data: createTagDto,
+      select: this.tagSelect,
     });
   }
 
@@ -31,6 +42,7 @@ export class TagsService {
         id: id,
       },
       data: updateTagDto,
+      select: this.tagSelect,
     });
   }
 
@@ -39,6 +51,7 @@ export class TagsService {
       where: {
         id: id,
       },
+      select: this.tagSelect,
     });
   }
 }
