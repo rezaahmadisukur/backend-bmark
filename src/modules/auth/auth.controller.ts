@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiOperation,
@@ -9,6 +9,8 @@ import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import { type JwtUser } from './strategies/jwt.strategy';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -24,6 +26,13 @@ export class AuthController {
       message: 'You are authenticated!',
       user: req.user,
     };
+  }
+
+  @Get('profile')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  getProfile(@CurrentUser() user: JwtUser) {
+    return user;
   }
 
   @Post('register')
