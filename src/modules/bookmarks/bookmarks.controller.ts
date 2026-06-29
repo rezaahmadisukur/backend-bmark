@@ -6,12 +6,18 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { BookmarksService } from './bookmarks.service';
 import { CreateBookmarkDto } from './dto/create-bookmark.dto';
 import { UpdateBookmarkDto } from './dto/update-bookmark.dto';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
+@ApiTags('Bookmarks')
 @Controller('bookmarks')
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
 export class BookmarksController {
   constructor(private readonly bookmarksService: BookmarksService) {}
 
