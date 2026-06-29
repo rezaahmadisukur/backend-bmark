@@ -4,15 +4,23 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 
-interface JwtPayload {
-  sub: string;
+// Interface untuk payload yang kita simpan di JWT
+export interface JwtPayload {
+  sub: string; // subject = user id
   email: string;
+}
+
+// Interface untuk user yang di-attach ke requrest
+export interface JwtUser {
+  id: string;
+  email: string;
+  name: string;
 }
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
-    configService: ConfigService,
+    private configService: ConfigService,
     private prismaService: PrismaService,
   ) {
     const secret = configService.get<string>('JWT_SECRET');
@@ -26,7 +34,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(jwtPayload: JwtPayload) {
+  async validate(jwtPayload: JwtPayload): Promise<JwtUser> {
     const user = await this.prismaService.user.findUnique({
       where: {
         id: jwtPayload.sub,
@@ -34,7 +42,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
 
     if (!user) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException(
+        'User no longer exists or has been deleted',
+      );
     }
 
     return {
