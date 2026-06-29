@@ -2,6 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
+import { getJwtSecret } from 'src/infra/config/jwt.config';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 
 // Interface untuk payload yang kita simpan di JWT
@@ -20,13 +21,10 @@ export interface JwtUser {
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
-    private configService: ConfigService,
+    protected configService: ConfigService,
     private prismaService: PrismaService,
   ) {
-    const secret = configService.get<string>('JWT_SECRET');
-    if (!secret) {
-      throw new Error('JWT_SECRET is not defined in environment variables');
-    }
+    const secret = getJwtSecret(configService);
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
