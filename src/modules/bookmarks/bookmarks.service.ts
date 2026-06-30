@@ -58,7 +58,7 @@ export class BookmarksService {
     return this.prismaService.bookmark.create({
       data: {
         ...createBookmarkDto,
-        userId,
+        userId: userId,
       },
       select: this.bookmarkSelect,
     });
