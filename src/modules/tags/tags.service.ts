@@ -17,6 +17,9 @@ export class TagsService {
   async findAll() {
     return this.prismaService.tag.findMany({
       select: this.tagSelect,
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
   }
 
