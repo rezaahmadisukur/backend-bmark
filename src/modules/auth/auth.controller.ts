@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiOperation,
@@ -16,17 +16,6 @@ import { type JwtUser } from './strategies/jwt.strategy';
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
-
-  @Post('test')
-  @UseGuards(JwtAuthGuard)
-  @ApiOperation({ summary: 'Test protected route' })
-  @ApiBearerAuth()
-  testProtectedRoute(@Req() req) {
-    return {
-      message: 'You are authenticated!',
-      user: req.user,
-    };
-  }
 
   @Get('profile')
   @UseGuards(JwtAuthGuard)
