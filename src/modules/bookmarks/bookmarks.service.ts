@@ -21,6 +21,17 @@ export class BookmarksService {
     createdAt: true,
     updatedAt: true,
     userId: true, // Tambah userId untuk authorization check
+    tags: {
+      select: {
+        tag: {
+          select: {
+            id: true,
+            name: true,
+            color: true,
+          },
+        },
+      },
+    },
   } as const;
 
   async findAll(userId: string) {
@@ -55,10 +66,28 @@ export class BookmarksService {
   }
 
   async create(createBookmarkDto: CreateBookmarkDto, userId: string) {
+    const { tags, ...bookmarkData } = createBookmarkDto;
+
     return this.prismaService.bookmark.create({
       data: {
-        ...createBookmarkDto,
+        ...bookmarkData,
         userId: userId,
+        tags: tags?.length
+          ? {
+              create: tags.map((tagName) => ({
+                tag: {
+                  connectOrCreate: {
+                    where: {
+                      name: tagName,
+                    },
+                    create: {
+                      name: tagName,
+                    },
+                  },
+                },
+              })),
+            }
+          : undefined,
       },
       select: this.bookmarkSelect,
     });
@@ -88,11 +117,13 @@ export class BookmarksService {
       );
     }
 
+    const { tags, ...bookmarkData } = updateBookmarkDto;
+
     return this.prismaService.bookmark.update({
       where: {
         id: id,
       },
-      data: updateBookmarkDto,
+      data: bookmarkData,
       select: this.bookmarkSelect,
     });
   }
