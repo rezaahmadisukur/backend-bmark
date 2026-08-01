@@ -13,6 +13,14 @@ export class CreateBookmarkDto {
   description?: string;
 
   @IsOptional()
+  @IsString()
+  image?: string;
+
+  @IsOptional()
+  @IsString()
+  favicon?: string;
+
+  @IsOptional()
   @IsArray()
   @IsString({ each: true })
   tags?: string[];
