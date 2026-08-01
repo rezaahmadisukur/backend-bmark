@@ -16,6 +16,7 @@ export class BookmarksService {
     url: true,
     title: true,
     description: true,
+    image: true,
     favicon: true,
     isFavorite: true,
     createdAt: true,
