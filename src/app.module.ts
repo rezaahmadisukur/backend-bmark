@@ -5,6 +5,7 @@ import { BookmarksModule } from './modules/bookmarks/bookmarks.module';
 import { CollectionsModule } from './modules/collections/collections.module';
 import { TagsModule } from './modules/tags/tags.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { MetadataModule } from './modules/metadata/metadata.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { AuthModule } from './modules/auth/auth.module';
     BookmarksModule,
     CollectionsModule,
     TagsModule,
+    MetadataModule,
   ],
 })
 export class AppModule {}
