@@ -46,9 +46,26 @@ export class MetadataService {
         favicon = `${origin}/${favicon}`;
       }
 
-      // Image: pakai thum.io (screenshot asli)
-      const domain = new URL(url).hostname;
-      const image = `https://image.thum.io/get/width/400/crop/400/https://${domain}`;
+      // const domain = new URL(url).hostname;
+      // Image: pakai OG image dari meta tag
+      let image = $('meta[property="og:image"]').attr('content') || '';
+
+      // If empty image, use favicon as image
+      if (!image) {
+        image = favicon;
+      }
+
+      // Handle relative URL for image
+      if (image && !image.startsWith('http')) {
+        const { origin } = new URL(url);
+        if (image.startsWith('//')) {
+          image = `https:${image}`;
+        } else if (image.startsWith('/')) {
+          image = `${origin}${image}`;
+        } else {
+          image = `${origin}/${image}`;
+        }
+      }
 
       return { title, description, image, favicon };
     } catch {
