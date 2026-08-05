@@ -42,8 +42,10 @@ export class MetadataService {
         } else if (favicon.startsWith('/')) {
           // Root-relative: /favicon.ico
           favicon = `${origin}${favicon}`;
+        } else {
+          // Relative tanpa slash: favicon-anichin.webp
+          favicon = `${origin}/${favicon}`;
         }
-        favicon = `${origin}/${favicon}`;
       }
 
       // const domain = new URL(url).hostname;
