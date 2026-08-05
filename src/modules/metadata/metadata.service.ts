@@ -9,7 +9,13 @@ export class MetadataService {
       const response = await axios.get<string>(url, {
         responseType: 'text',
         timeout: 10000,
-        headers: { 'User-Agent': 'Mozilla/5.0 ...' },
+        headers: {
+          'User-Agent':
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
+          Accept:
+            'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+          'Accept-Language': 'en-US,en;q=0.9',
+        },
       });
 
       const $ = cheerio.load(response.data);
@@ -71,7 +77,14 @@ export class MetadataService {
 
       return { title, description, image, favicon };
     } catch {
-      throw new Error('Failed to fetch metadata');
+      // Fallback: return basic data so user can still save bookmark
+      const { hostname } = new URL(url);
+      return {
+        title: hostname,
+        description: '',
+        image: '',
+        favicon: `https://${hostname}/favicon.ico`,
+      };
     }
   }
 }
