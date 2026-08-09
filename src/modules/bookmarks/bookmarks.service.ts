@@ -21,7 +21,8 @@ export class BookmarksService {
     isFavorite: true,
     createdAt: true,
     updatedAt: true,
-    userId: true, // Tambah userId untuk authorization check
+    userId: true,
+    collectionId: true,
     tags: {
       select: {
         tag: {
@@ -124,7 +125,24 @@ export class BookmarksService {
       where: {
         id: id,
       },
-      data: bookmarkData,
+      data: {
+        ...bookmarkData,
+        ...(tags?.length
+          ? {
+              tags: {
+                deleteMany: {},
+                create: tags.map((tagName) => ({
+                  tag: {
+                    connectOrCreate: {
+                      where: { name: tagName },
+                      create: { name: tagName },
+                    },
+                  },
+                })),
+              },
+            }
+          : {}),
+      },
       select: this.bookmarkSelect,
     });
   }
