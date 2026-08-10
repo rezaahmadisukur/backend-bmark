@@ -1,4 +1,10 @@
-import { IsArray, IsOptional, IsString, IsUrl } from 'class-validator';
+import {
+  IsArray,
+  IsBoolean,
+  IsOptional,
+  IsString,
+  IsUrl,
+} from 'class-validator';
 
 export class CreateBookmarkDto {
   @IsString()
@@ -19,6 +25,14 @@ export class CreateBookmarkDto {
   @IsOptional()
   @IsString()
   favicon?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  isFavorite?: boolean;
+
+  @IsOptional()
+  @IsString()
+  collectionId?: string;
 
   @IsOptional()
   @IsArray()
