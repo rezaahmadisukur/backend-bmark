@@ -98,7 +98,7 @@ export class CollectionsController {
   })
   update(
     @Param('id') id: string,
-    updateCollectionDto: UpdateCollectionDto,
+    @Body() updateCollectionDto: UpdateCollectionDto,
     @CurrentUser() user: JwtUser,
   ) {
     return this.collectionsService.update(id, updateCollectionDto, user.id);
