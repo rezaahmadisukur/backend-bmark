@@ -87,7 +87,7 @@ export class TagsController {
     status: 404,
     description: 'Tag not found',
   })
-  update(@Param('id') id: string, updateTagDto: UpdateTagDto) {
+  update(@Param('id') id: string, @Body() updateTagDto: UpdateTagDto) {
     return this.tagsService.update(id, updateTagDto);
   }
 
