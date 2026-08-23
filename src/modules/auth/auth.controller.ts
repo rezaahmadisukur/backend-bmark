@@ -5,6 +5,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { Throttle } from '@nestjs/throttler';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
@@ -17,6 +18,7 @@ import { type JwtUser } from './strategies/jwt.strategy';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @Throttle({ default: { limit: 10, ttl: 60_000 } })
   @Post('register')
   @ApiOperation({
     summary: 'Register a new user',
@@ -41,6 +43,7 @@ export class AuthController {
     return this.authService.register(registerDto);
   }
 
+  @Throttle({ default: { limit: 10, ttl: 60_000 } })
   @Post('login')
   @ApiOperation({
     summary: 'Login with email and password',
