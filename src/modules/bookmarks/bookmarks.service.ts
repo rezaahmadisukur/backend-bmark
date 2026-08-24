@@ -174,4 +174,33 @@ export class BookmarksService {
       select: this.bookmarkSelect,
     });
   }
+
+  async toggleFavorite(id: string, userId: string) {
+    const bookmark = await this.prismaService.bookmark.findUnique({
+      where: {
+        id: id,
+      },
+      select: {
+        userId: true,
+        isFavorite: true,
+      },
+    });
+
+    if (!bookmark) throw new NotFoundException('Bookmark not found');
+    if (bookmark.userId !== userId) {
+      throw new ForbiddenException(
+        'You do not have permission to update this bookmark',
+      );
+    }
+
+    return this.prismaService.bookmark.update({
+      where: {
+        id: id,
+      },
+      data: {
+        isFavorite: !bookmark.isFavorite,
+      },
+      select: this.bookmarkSelect,
+    });
+  }
 }
