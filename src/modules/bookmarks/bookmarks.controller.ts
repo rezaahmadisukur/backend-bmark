@@ -124,4 +124,29 @@ export class BookmarksController {
   delete(@Param('id') id: string, @CurrentUser() user: JwtUser) {
     return this.bookmarksService.delete(id, user.id);
   }
+
+  /**
+   *
+   */
+  @Patch(':id/favorite')
+  @ApiOperation({
+    summary: 'Toggle favorite status',
+    description:
+      'Flip the isFavorite flag of a bookmark belonging to the authenticated user',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Bookmark favorite toggled',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Bookmark not found',
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'Forbidden - Bookmark does not belong to user',
+  })
+  toggleFavorite(@Param('id') id: string, @CurrentUser() user: JwtUser) {
+    return this.bookmarksService.toggleFavorite(id, user.id);
+  }
 }
