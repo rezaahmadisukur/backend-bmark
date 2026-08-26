@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { BookmarksService } from './bookmarks.service';
@@ -37,8 +38,8 @@ export class BookmarksController {
     status: 200,
     description: 'Bookmarks retrieved successfully',
   })
-  findAll(@CurrentUser() user: JwtUser) {
-    return this.bookmarksService.findAll(user.id);
+  findAll(@CurrentUser() user: JwtUser, @Query('search') search?: string) {
+    return this.bookmarksService.findAll(user.id, search);
   }
 
   @Get(':id')
