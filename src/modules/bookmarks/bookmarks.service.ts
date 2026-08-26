@@ -36,10 +36,34 @@ export class BookmarksService {
     },
   } as const;
 
-  async findAll(userId: string) {
+  async findAll(userId: string, search?: string) {
     return this.prismaService.bookmark.findMany({
       where: {
         userId: userId,
+        ...(search
+          ? {
+              OR: [
+                {
+                  title: {
+                    contains: search,
+                    mode: 'insensitive',
+                  },
+                },
+                {
+                  url: {
+                    contains: search,
+                    mode: 'insensitive',
+                  },
+                },
+                {
+                  description: {
+                    contains: search,
+                    mode: 'insensitive',
+                  },
+                },
+              ],
+            }
+          : {}),
       },
       select: this.bookmarkSelect,
       orderBy: {
