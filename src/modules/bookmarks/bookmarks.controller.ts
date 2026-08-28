@@ -38,8 +38,19 @@ export class BookmarksController {
     status: 200,
     description: 'Bookmarks retrieved successfully',
   })
-  findAll(@CurrentUser() user: JwtUser, @Query('search') search?: string) {
-    return this.bookmarksService.findAll(user.id, search);
+  findAll(
+    @CurrentUser() user: JwtUser,
+    @Query('search') search?: string,
+    @Query('page') page?: string,
+    @Query('limit') limit?: string,
+    @Query('sort') sort?: string,
+  ) {
+    return this.bookmarksService.findAll(user.id, {
+      search,
+      page: page ? Number(page) : undefined,
+      limit: limit ? Number(limit) : undefined,
+      sort: sort as 'newest' | 'oldest' | 'az' | undefined,
+    });
   }
 
   @Get(':id')
