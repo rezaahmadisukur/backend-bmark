@@ -254,6 +254,28 @@ async function main() {
         userId: user.id,
         collectionId: colId['design'],
       },
+      {
+        url: 'https://www.smashingmagazine.com',
+        title: 'Smashing Magazine',
+        description: 'Resources for web designers and developers.',
+        image:
+          'https://www.smashingmagazine.com/images/smashing-apple-touch-icon.png',
+        favicon: 'https://www.smashingmagazine.com/images/favicon.png',
+        isFavorite: false,
+        userId: user.id,
+        collectionId: colId['design'],
+      },
+      {
+        url: 'https://docs.github.com/en',
+        title: 'GitHub Docs',
+        description: 'Documentation for GitHub features and workflows.',
+        image:
+          'https://github.githubassets.com/images/modules/open_graph/github-logo.png',
+        favicon: 'https://github.githubassets.com/favicons/favicon.svg',
+        isFavorite: false,
+        userId: user.id,
+        collectionId: colId['learning'],
+      },
     ],
   });
 
@@ -277,6 +299,8 @@ async function main() {
     'React — A JavaScript library for building UIs': ['react', 'frontend'],
     'Vercel Documentation': ['devops'],
     'Figma Blog': ['design', 'ui'],
+    'Smashing Magazine': ['design'],
+    'GitHub Docs': ['learning'],
   };
 
   for (const bm of bms) {
