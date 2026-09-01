@@ -74,6 +74,8 @@ async function main() {
     { name: 'design', color: '#f472b6' },
     { name: 'ui', color: '#f472b6' },
     { name: 'learning', color: '#60a5fa' },
+    { name: 'nodejs', color: '#3E863D' },
+    { name: 'javascript', color: '#F7DF1E' },
   ];
   const tags = await Promise.all(
     tagNames.map((t) => ensureTag(t.name, t.color)),
@@ -200,6 +202,58 @@ async function main() {
         userId: user.id,
         collectionId: colId['frontend'],
       },
+      {
+        url: 'https://nodejs.org/en/docs',
+        title: 'Node.js Documentation',
+        description: 'JavaScript runtime built on Chrome V8.',
+        image: 'https://nodejs.org/static/images/logo-hexagon.svg',
+        favicon: 'https://nodejs.org/favicon.ico',
+        isFavorite: false,
+        userId: user.id,
+        collectionId: colId['backend'],
+      },
+      {
+        url: 'https://developer.mozilla.org/en-US/docs/Web/HTML',
+        title: 'MDN Web Docs — HTML',
+        description: 'Reference for HyperText Markup Language.',
+        image: 'https://developer.mozilla.org/mdn-social-share.png',
+        favicon: 'https://developer.mozilla.org/favicon-48x48.png',
+        isFavorite: false,
+        userId: user.id,
+        collectionId: colId['learning'],
+      },
+      {
+        url: 'https://reactjs.org',
+        title: 'React — A JavaScript library for building UIs',
+        description: 'The library for web and native user interfaces.',
+        image: 'https://reactjs.org/og-image.png',
+        favicon: 'https://reactjs.org/favicon.ico',
+        isFavorite: false,
+        userId: user.id,
+        collectionId: colId['frontend'],
+      },
+      {
+        url: 'https://vercel.com/docs',
+        title: 'Vercel Documentation',
+        description: 'Platform to deploy and scale web apps.',
+        image:
+          'https://assets.vercel.com/image/upload/frontend/footer/logotype.svg',
+        favicon: 'https://vercel.com/favicon.ico',
+        isFavorite: false,
+        userId: user.id,
+        collectionId: colId['devops'],
+      },
+      {
+        url: 'https://www.figma.com/blog',
+        title: 'Figma Blog',
+        description: 'Insights on design and collaboration.',
+        image:
+          'https://www.figma.com/blog/wp-content/uploads/2023/08/behind-the-scenes.png',
+        favicon: 'https://www.figma.com/apple-touch-icon.png',
+        isFavorite: true,
+        userId: user.id,
+        collectionId: colId['design'],
+      },
     ],
   });
 
@@ -218,6 +272,11 @@ async function main() {
     'Docker Documentation': ['devops', 'docker'],
     'shadcn/ui Components': ['ui', 'react', 'frontend', 'design'],
     'Vite — Next Generation Frontend Tooling': ['frontend', 'design'],
+    'Node.js Documentation': ['backend', 'nodejs', 'javascript'],
+    'MDN Web Docs — HTML': ['frontend', 'learning'],
+    'React — A JavaScript library for building UIs': ['react', 'frontend'],
+    'Vercel Documentation': ['devops'],
+    'Figma Blog': ['design', 'ui'],
   };
 
   for (const bm of bms) {
