@@ -44,12 +44,20 @@ export class BookmarksController {
     @Query('page') page?: string,
     @Query('limit') limit?: string,
     @Query('sort') sort?: string,
+    @Query('tag') tag?: string,
+    @Query('collectionId') collectionId?: string,
+    @Query('favorites') favorites?: string,
+    @Query('recent') recent?: string,
   ) {
     return this.bookmarksService.findAll(user.id, {
       search,
       page: page ? Number(page) : undefined,
       limit: limit ? Number(limit) : undefined,
       sort: sort as 'newest' | 'oldest' | 'az' | undefined,
+      tag: tag || undefined,
+      collectionId: collectionId || undefined,
+      favorites: favorites === 'true' ? true : undefined,
+      recent: recent === 'true' ? true : undefined,
     });
   }
 
