@@ -13,6 +13,10 @@ type FindAllOptions = {
   page?: number;
   limit?: number;
   sort?: 'newest' | 'oldest' | 'az';
+  tag?: string;
+  collectionId?: string;
+  favorites?: boolean;
+  recent?: boolean;
 };
 
 @Injectable()
@@ -45,7 +49,8 @@ export class BookmarksService {
   } as const;
 
   async findAll(userId: string, options: FindAllOptions = {}) {
-    const { search, page, limit, sort } = options;
+    const { search, page, limit, sort, tag, collectionId, favorites, recent } =
+      options;
 
     const where: Prisma.BookmarkWhereInput = {
       userId: userId,
@@ -71,6 +76,17 @@ export class BookmarksService {
                 },
               },
             ],
+          }
+        : {}),
+      // --- Filter server-side (biar pagination akurat di semua view) ---
+      ...(tag ? { tags: { some: { tag: { name: tag } } } } : {}),
+      ...(collectionId ? { collectionId } : {}),
+      ...(favorites ? { isFavorite: true } : {}),
+      ...(recent
+        ? {
+            createdAt: {
+              gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+            },
           }
         : {}),
     };
